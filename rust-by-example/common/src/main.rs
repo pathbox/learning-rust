@@ -20,4 +20,19 @@ fn main() {
     let _ss = "abcd";
     println!("The value of _ss is: {}", _ss);
     println!("The value of cat is: {}", _heart_eyed_cat);
+
+    // 元组类型
+    // 元组是一个将多个其他类型的值组合进一个复合类型的主要方式。
+    // 我们使用包含在圆括号中的逗号分隔的值列表来创建一个元组。元组中的每一个位置都有一个类型，而且这些不同值的类型也不必是相同的
+    let tup: (i32, f64, u8) = (500, 6.4, 1);
+    let (x,y,z) = tup;
+    println!("The tup is: {:?}", tup);
+    println!("The value of y is: {}", y);
+    let x: (i32, f64, u8) = (500, 6.4, 1);
+
+    let five_hundred = x.0;
+
+    let six_point_four = x.1;
+
+    let one = x.2;
 }
