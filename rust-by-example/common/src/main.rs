@@ -35,4 +35,7 @@ fn main() {
     let six_point_four = x.1;
 
     let one = x.2;
+    let months = ["January", "February", "March", "April", "May", "June", "July","August", "September", "October", "November", "December"];
+
+      println!("The value of Januray is: {}", months[0]);
 }
