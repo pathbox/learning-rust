@@ -47,6 +47,24 @@ fn main() {
     let x = plus_one(5);
 
     println!("The value of x is: {}", x);
+
+
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    assert_eq!(result, 20);
+
+    for number in (1..4).rev() { // 反序输出 只会到3
+         println!("{} !", number);
+    }
+     
 }
 
 fn another_function(x: i32, y: i32) {
@@ -61,3 +79,42 @@ fn five() -> i32 {
 fn plus_one(x: i32) -> i32 {
     x + 1
 }
+
+fn ifelseresult() {
+    let condition = true; 
+
+    let str = if condition {
+        "yes"
+    }else {
+        "no"
+    };
+}
+
+fn while_fn() {
+    let mut number = 3;
+    while number != 0 {
+        println!("{}!", number);
+
+        number = number -1;
+    }
+    println!("LIFTOFF!!!");
+
+    let a = [1,2,3,4,5];
+
+    let mut index = 0;
+
+    while index < 5 {
+        println!("the value is: {}", a[index]);
+
+        index = index + 1;
+    }
+
+    for element in a.iter() {
+       println!("the value is: {}", element);
+    }
+
+    for number in (1..4).rev() { // 反序输出
+         println!("{}!", number);
+    }
+}
+
