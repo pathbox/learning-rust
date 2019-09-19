@@ -100,7 +100,19 @@ fn main() {
     let s3 = takes_and_gives_back(s2);  // s2 被移动到
                                         // takes_and_gives_back 中, 
                                         // 它也将返回值移给 s3
+
+    let s1 = String::from("hello");
+
+    let (s2, len) = calculate_length(s1);
+
+    println!("The length of '{}' is {}.", s2, len);
      
+}
+
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len();
+
+    (s, length)
 }
 
 fn gives_ownership() -> String {             // gives_ownership 将返回值移动给
