@@ -64,6 +64,22 @@ fn main() {
     for number in (1..4).rev() { // 反序输出 只会到3
          println!("{} !", number);
     }
+
+    // let s1 = String::from("hello");
+    // let s2 = s1; // 这是移动 而不是浅拷贝 所以s1已结被释放了
+    // println!("{}, world!", s1);// 报错s1 value borrowed here after move
+
+    // clone 克隆
+    let s1 = String::from("hello");
+    let s2 = s1.clone();
+
+    println!("s1 = {}, s2 = {}", s1, s2);
+
+    let s3 = "nice";
+    let s4 = s3;  // 这是浅拷贝
+    println!("{}",s4); // 这样却是可以正确的
+
+
      
 }
 
