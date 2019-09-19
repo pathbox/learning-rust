@@ -107,6 +107,22 @@ fn main() {
 
     println!("The length of '{}' is {}.", s2, len);
      
+     let s = String::from("hello");
+
+    change(&s);
+
+    let mut s = String::from("hello");
+
+    change_mut(&mut s);
+
+}
+
+fn change_mut(s: &mut String) {
+    s.push_str(", world");
+}
+
+fn change(some_string: &String) {
+    some_string.push_str(", world"); // 报错 不允许修改引用的值
 }
 
 fn calculate_length(s: String) -> (String, usize) {
