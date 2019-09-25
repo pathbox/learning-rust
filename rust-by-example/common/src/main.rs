@@ -136,9 +136,37 @@ fn main() {
 
     s.clear(); // 清空了字符串，使其等于 ""
 
-    print!("The word value: {}", word);
+    println!("The word value: {}", word);
 
 
+    let s = String::from("hello world");
+
+    let slice = &s[0..2];
+    let slice = &s[..2];
+    let len = s.len();
+
+    let slice = &s[3..len];
+    let slice = &s[3..];
+    let slice = &s[0..len];
+    let slice = &s[..];
+    let hello = &s[0..=4];
+    let world = &s[6..=10];
+
+    let my_string = String::from("hello world");
+
+    // first_word_good 中传入 `String` 的 slice
+    let word = first_word_good(&my_string[..]);
+
+    let my_string_literal = "hello world";
+
+    // first_word_good 中传入字符串字面值的 slice
+    let word = first_word_good(&my_string_literal[..]);
+
+    // 因为字符串字面值 **就是** 字符串 slice，
+    // 这样写也可以，即不使用 slice 语法！
+    let word = first_word_good(my_string_literal);
+
+    println!("Now the word value: {}", word);
 }
 
 fn first_word(s: &String) -> usize {
@@ -151,6 +179,18 @@ fn first_word(s: &String) -> usize {
     }
 
     s.len()
+}
+
+fn first_word_good(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i]
+        }
+    }
+
+    &s[..]
 }
 
 fn change_mut(s: &mut String) {
