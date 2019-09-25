@@ -109,21 +109,57 @@ fn main() {
      
      let s = String::from("hello");
 
-    change(&s);
-
     let mut s = String::from("hello");
 
     change_mut(&mut s);
 
+    let mut s = String::from("hello");
+
+    {
+        let r1 = &mut s; // r1 在这里离开了作用域，所以我们完全可以创建一个新的引用
+
+    }
+
+    let r2 = &mut s;
+
+    let mut ss = String::from("hello");
+
+    // let r1 = &ss; // no problem  不可变引用
+    // let r2 = &ss; // no problem  不可变引用
+    // let r3 = &mut ss; // BIG PROBLEM  可变引用
+
+    // println!("{}, {}, and {}", r1, r2, r3); 
+
+    let mut sb = String::from("hello world");
+
+    let word = first_word(&s);
+
+    s.clear(); // 清空了字符串，使其等于 ""
+
+    print!("The word value: {}", word);
+
+
+}
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for(i, &item) in bytes.iter().enumerate() {
+        if item == b' '{
+            return i;
+        }
+    }
+
+    s.len()
 }
 
 fn change_mut(s: &mut String) {
     s.push_str(", world");
 }
 
-fn change(some_string: &String) {
-    some_string.push_str(", world"); // 报错 不允许修改引用的值
-}
+// fn change(some_string: &String) {
+//     some_string.push_str(", world"); // 报错 不允许修改引用的值
+// }
 
 fn calculate_length(s: String) -> (String, usize) {
     let length = s.len();
