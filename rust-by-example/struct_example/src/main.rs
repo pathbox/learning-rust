@@ -41,6 +41,9 @@ fn main() {
         rect4.area(name)
     );
 
+    let sq = Rectangle::square(3);
+    println!("The size: {}", sq.width);
+
 }
 
 struct User {
@@ -78,11 +81,16 @@ impl Rectangle {
         println!("The name: {}", name);
         self.width * self.height 
     }
+
+    fn square(size: u32) -> Rectangle {
+        Rectangle {width: size, height: size}
+    }
 }
 
 fn area2(rectangle: &Rectangle) -> u32 {
     rectangle.width * rectangle.height
 }
+
 
 // # #[derive(Debug,Copy,Clone)]
 // # struct Point {
