@@ -180,7 +180,7 @@ fn first_word(s: &String) -> usize {
 
     s.len()
 }
-
+// 遇到空格 返回空格之前的单词
 fn first_word_good(s: &str) -> &str {
     let bytes = s.as_bytes();
 
@@ -190,7 +190,7 @@ fn first_word_good(s: &str) -> &str {
         }
     }
 
-    &s[..]
+    &s[..]// 返回的竟然是空格之前的单词
 }
 
 fn change_mut(s: &mut String) {
