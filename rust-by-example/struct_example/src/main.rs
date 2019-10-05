@@ -44,6 +44,13 @@ fn main() {
     let sq = Rectangle::square(3);
     println!("The size: {}", sq.width);
 
+    // It is Penny
+
+    let p = Coin::Penny; // 这种方式调用枚举enum; 应该把枚举值理解成一个标记，而不是具体的某个整数或字符串
+
+    let result1 = value_in_cents(p);
+    println!("The Penny Value is {}", result1);
+
 }
 
 struct User {
@@ -92,7 +99,7 @@ fn area2(rectangle: &Rectangle) -> u32 {
 }
 
 
-// # #[derive(Debug,Copy,Clone)]
+// #[derive(Debug,Copy,Clone)]
 // # struct Point {
 // #     x: f64,
 // #     y: f64,
@@ -110,3 +117,36 @@ fn area2(rectangle: &Rectangle) -> u32 {
 // # let p2 = Point { x: 5.0, y: 6.5 };
 // p1.distance(&p2);
 // (&p1).distance(&p2);
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime, 
+    Quarter,    
+}
+
+fn value_in_cents(coin: Coin) -> u32 {
+    match coin {
+        Coin::Penny => {
+            println!("Lucky penny!"); // 执行代码 
+            1                         // 返回值
+        },
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin:: Quarter => 25,
+    }
+}
+
+#[derive(Debug)] // 这样可以可以立刻看到州的名称
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+// enum Coin {
+//     Penny,
+//     Nickel,
+//     Dime,
+//     Quarter(UsState),
+// }
