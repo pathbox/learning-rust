@@ -1,3 +1,10 @@
+enum SpreadsheetCell {
+    Int(i32),
+    Float(f64),
+    Text(String),
+}
+
+
 fn main() {
     println!("Common Set");
 
@@ -18,4 +25,21 @@ fn main() {
     //     Some(third) => println!("The third element is {}", third),
     //     None => println!("There is no third element."),
     // }
+    
+    let v = vec![100, 200, 300];
+    for i in &v {
+        println!("{}", i);
+    }
+
+    let mut v = vec![100,200,300];
+    for i in &mut v {
+        *i += 50;
+        println!("{}", i);
+    }
+
+    let row = vec![
+        SpreadsheetCell::Int(3),
+        SpreadsheetCell::Text(String::from("blue")),
+        SpreadsheetCell::Float(10.12),
+    ];
 }
