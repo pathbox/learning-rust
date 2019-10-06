@@ -1,5 +1,8 @@
 use crate::sound1::instrument;
 use std::collections::HashMap;
+use std::io::Result as IoResult; // 重命名
+use std::{cmp::Ordering, io}; // use std::cmp::Ordering; use std::io;
+mod sound;
 
 fn main() {
     let mut v = plant::Vegetable::new("squash", 10);
@@ -15,6 +18,24 @@ fn main() {
 
     let mut map = HashMap::new();
     map.insert(1,2);
+    performance_group1::clarinet_trio();
+    performance_group1::instrument::clarinet(); // 重导出后能够使用到
+
+    // 绝对路径
+    crate::sound::instrument::clarinet();
+
+    // 相对路径
+    sound::instrument::clarinet();
+}
+
+mod performance_group1 {
+    pub use crate::sound1::instrument;
+
+    pub fn clarinet_trio() {
+        instrument::clarinet();
+        instrument::clarinet();
+        instrument::clarinet();
+    }
 }
 
 mod instrument1 {
