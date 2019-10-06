@@ -42,4 +42,27 @@ fn main() {
         SpreadsheetCell::Text(String::from("blue")),
         SpreadsheetCell::Float(10.12),
     ];
+
+
+    let data1 = "initial contents";
+
+    let s = data1.to_string();
+    let s1 = String::from("initial contents");
+
+    let mut s2 = String::from("foo");
+    let s3 = " bar";
+    s2.push_str(s3);
+    println!("s2 is {}", s2);
+
+    let s4 = String::from("Hello, ");
+    let s5 = String::from("world!");
+    let s6 = s4 + &s5; // 注意 s4 被移动了，不能继续使用
+    println!("s6 is {}", s6);
+
+    let s7 = String::from("tic");
+    let s8 = String::from("tac");
+    let s9 = String::from("toe");
+
+    let s10 = format!("{}-{}-{}", s7, s8, s9); // 格式化字符串输出
+    println!("s10 is {}", s10);
 }
