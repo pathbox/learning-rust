@@ -1,4 +1,5 @@
 use crate::sound1::instrument;
+use std::collections::HashMap;
 
 fn main() {
     let mut v = plant::Vegetable::new("squash", 10);
@@ -11,6 +12,9 @@ fn main() {
     let order1 = menu1::Appetizer::Soup;
 
     instrument::clarinet();
+
+    let mut map = HashMap::new();
+    map.insert(1,2);
 }
 
 mod instrument1 {
