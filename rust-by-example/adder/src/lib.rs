@@ -40,6 +40,11 @@ mod tests {
     fn greater_than_100() {
         Guess::new(200);
     }
+
+    #[test]
+    fn internal() {
+        assert_eq!(4, internal_adder(2, 2));
+    }
 }
 
 #[derive(Debug)]
@@ -76,4 +81,12 @@ impl Guess {
             value
         }
     }
+}
+
+pub fn add_two1(a: i32) -> i32 {
+    internal_adder(a, 2)
+}
+
+fn internal_adder(a: i32, b: i32) -> i32 {
+    a + b
 }
