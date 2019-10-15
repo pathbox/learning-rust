@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::fs::{self, File};
 use std::io::prelude::*;
+use std::env;
 
 fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     vec![]
