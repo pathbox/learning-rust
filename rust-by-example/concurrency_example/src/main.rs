@@ -1,6 +1,7 @@
 use std::thread;
 use std::time::Duration;
 use std::sync::mpsc;
+use std::sync::{Mutex, Arc};
 
 fn main() {
     // 1. 需要调用 thread::spawn 函数并传递一个闭包
@@ -104,5 +105,25 @@ fn main() {
     for received in rx {
          println!("Got: {}", received);
     }
+
+
+     let counter = Arc::new(Mutex::new(0));
+     let mut handles = vec![];
+
+     for _ in 0..10 {
+         let counter = Arc::clone(&counter);
+         let handle = thread::spawn(move || {
+             let mut num = counter.lock().unwrap();
+
+             *num += 1;
+         });
+         handles.push(handle);
+     }
+
+     for handle in handles {
+         handle.join().unwrap();
+     }
+
+    println!("Result:{}", *counter.lock().unwrap()); // 2. 打印互斥锁中的变量
 }
 
