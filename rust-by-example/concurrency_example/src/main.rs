@@ -1,5 +1,6 @@
 use std::thread;
 use std::time::Duration;
+use std::sync::mpsc;
 
 fn main() {
     // 1. 需要调用 thread::spawn 函数并传递一个闭包
@@ -56,5 +57,15 @@ fn main() {
     // drop(v);  // move了 所以不能在主线程drop v
 
     handle2.join().unwrap();
+
+    let (tx, rx) = mpsc::channel();
+
+    thread::spawn(move || {
+        let val = String::from("hi");
+        tx.send(val).unwrap();
+    });
+
+    let received = rx.recv().unwrap();
+    println!("Got: {}", received); //会阻塞主线程执行直到从通道中接收一个值
 }
 
