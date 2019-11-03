@@ -21,6 +21,10 @@ struct Point1 {
     z: i32,
 }
 
+enum Message1 {
+    Hello { id: i32 },
+}
+
 fn main() {
     let msg = Message::ChangeColor(Color::Hsv(0, 160, 255));
 
@@ -80,5 +84,38 @@ fn main() {
 
     match origin {
         Point1 { x, .. } => println!("x is {}", x),
+    }
+
+    let num = Some(4);
+
+    match num {
+        Some(x) if x <5 => println!("less than five: {}", x),
+        Some(x) => println!("{}", x),
+        None => (),
+    }
+
+    let x = Some(5);
+    let y = 10;
+
+    match x {
+        Some(50) => println!("Got 50"),
+        Some(n) if n == y => println!("Matched, n = {:?}", n),
+        _ => println!("Default case, x = {:?}", x),
+    }
+
+    println!("at the end: x = {:?}, y = {:?}", x, y);
+
+    let msg = Message1::Hello {id: 5 };
+
+    match msg {
+        Message1::Hello {id: id_variable @ 3...7 } => {
+            println!("Found an id in range: {}", id_variable)
+        },
+        Message1::Hello { id: 10...12 } => {
+            println!("Found an id in another range")
+        },
+        Message1::Hello { id } => {
+            println!("Found some other id: {}", id)
+        },
     }
 }
