@@ -1,6 +1,7 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 use std::net::TcpListener;
+use std::fs;
 
 fn main() {
     println!("Hello, world!");
@@ -21,7 +22,11 @@ fn handle_connection(mut stream: TcpStream) {
 
     println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
 
-    let response = "HTTP/1.1 200 OK\r\n\r\n"; // 最简单的HTTP 文本 response Status Code
+    let contents = fs::read_to_string("hello.html").unwrap(); // hello.html在项目根目录开始找
+
+    // let response = "HTTP/1.1 200 OK\r\n\r\n"; // 最简单的HTTP 文本 response Status Code
+
+    let response = format!("HTTP/1.1 200 OK\r\n\r\n{}", contents);
 
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
