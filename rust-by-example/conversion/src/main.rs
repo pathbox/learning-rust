@@ -17,4 +17,7 @@ fn main() {
     println!("My number is {:?}", num);
     println!("My number is {}", num.value);
 
+    let int = 5;
+    let num: Number = int.into(); // The same as let num = Number::from(5);
+    println!("My number is {:?}", num);
 }
