@@ -45,8 +45,27 @@ fn main() {
     assert_eq!(result, Err(()));
 
     let parsed: i32 = "5".parse().unwrap();
-    let turbo_parsed = "10".parse::<i32>().unwrap();
+    let turbo_parsed = "100".parse::<i32>().unwrap();
 
     let sum = parsed + turbo_parsed;
     println!("Sum: {:?}", sum);
+
+    let mut count = 0u32;
+
+    loop {
+        count += 1;
+
+        if count == 3 {
+            println!("three");
+            continue;
+        }
+
+        println!("{}", count);
+
+        if count == 10 {
+            println!("OK, it's enough");
+
+            break;
+        }
+    }
 }
