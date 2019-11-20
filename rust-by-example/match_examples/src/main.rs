@@ -6,7 +6,7 @@ enum Color {
     HSV(u32,u32,u32),
     HSL(u32,u32,u32),
     CMY(u32,u32,u32),
-    GMYK(u32,u32,u32,u32),
+    CMYK(u32,u32,u32,u32),
 }
 
 fn main() {
@@ -21,7 +21,7 @@ fn main() {
         // Match several values
         2 | 3 | 5 | 7 | 11 => println!("This is a prime"),
         // Match an inclusive range
-        13...19 => println!("A teen"),
+        // 13...19 => println!("A teen"),
         // Handle the rest of cases
         _ => println!("Ain't special"),
     }
@@ -30,8 +30,7 @@ fn main() {
     let binary = match boolean {
         false => 0,
         true => 1,
-    }
-    println!("{} -> {}", boolean, binary);
+    };
 
     let color = Color::RGB(122,17,40);
 
@@ -103,5 +102,26 @@ fn main() {
             *m += 10;
             println!("We added 10. `mut_value`: {:?}", m);
         },
+    }
+
+    struct Foo{
+        x: (u32, u32),
+        y: u32,
+    }
+
+    let foo = Foo { x: (1,2), y: 2};
+
+    match foo {
+       Foo { x: (1, b), y } => println!("First of x is 1, b = {},  y = {} ", b, y),
+
+        // you can destructure structs and rename the variables,
+        // the order is not important
+        Foo { y: 2, x: i } => println!("y is 2, i = {:?}", i),
+
+        // and you can also ignore some variables:
+        Foo { y, .. } => println!("y = {}, we don't care about x", y),
+        // this will give an error: pattern does not mention field `x`
+        //Foo { y } => println!("y = {}", y);
+
     }
 }
