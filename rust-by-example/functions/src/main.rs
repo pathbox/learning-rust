@@ -99,6 +99,7 @@ impl Pair {
 }
 
 fn main() {
+    use std::mem;
     fizzbuzz_to(100);
 
     let rectangle = Rectangle {
@@ -141,5 +142,101 @@ fn main() {
 
     let one = || 1;
     println!("closure returning one: {}", one());
+
     
+
+    let color = "green";
+
+    // A closure to print `color` which immediately borrows (`&`)
+    // `color` and stores the borrow and closure in the `print`
+    // variable. It will remain borrowed until `print` goes out of
+    // scope. `println!` only requires `by reference` so it doesn't
+    // impose anything more restrictive.
+    let print = || println!("`color`: {}", color);
+
+    print();  
+    print();
+
+    let mut count = 0;
+
+    // A closure to increment `count` could take either `&mut count`
+    // or `count` but `&mut count` is less restrictive so it takes
+    // that. Immediately borrows `count`.
+    //
+    // A `mut` is required on `inc` because a `&mut` is stored inside.
+    // Thus, calling the closure mutates the closure which requires
+    // a `mut`.
+    let mut inc = || {
+        count += 1;
+        println!("`count`: {}", count);
+    };
+
+    inc();
+    inc();
+
+    let movable = Box::new(3);
+
+    let consume = || {
+        println!("`movable`: {:?}", movable);
+        println!("`count here`: {}", count);
+        mem::drop(movable);
+    };
+
+    consume();
+
+    // println!("`movable`: {:?}", movable); // ^^^^^^^ value borrowed here after move
+
+    let haystack = vec![1,2,3];
+
+    let contains = move |needle| haystack.contains(needle);
+
+    println!("{}", contains(&1));
+    println!("{}", contains(&4));
+
+    let greeting = "hello";
+    // A non-copy type.
+    // `to_owned` creates owned data from borrowed one
+    let mut farewell = "goodbye".to_owned();
+
+    // Capture 2 variables: `greeting` by reference and
+    // `farewell` by value.
+    let diary = || {
+        // `greeting` is by reference: requires `Fn`.
+        println!("I said {}.", greeting);
+
+        // Mutation forces `farewell` to be captured by
+        // mutable reference. Now requires `FnMut`.
+        farewell.push_str("!!!");
+        println!("Then I screamed {}.", farewell);
+        println!("Now I can sleep. zzzzz");
+
+        // Manually calling drop forces `farewell` to
+        // be captured by value. Now requires `FnOnce`.
+        mem::drop(farewell);
+    };
+
+    // Call the function which applies the closure.
+    apply(diary);
+
+    // `double` satisfies `apply_to_3`'s trait bound
+    let double = |x| 2 * x;
+
+    println!("3 doubled: {}", apply_to_3(double));
+
+    
+
+
+}
+
+fn apply<F>(f: F) where
+    // The closure takes no input and returns nothing.
+    F: FnOnce() {
+    // ^ TODO: Try changing this to `Fn` or `FnMut`.
+
+    f();
+}
+
+fn apply_to_3<F>(f: F) -> i32 where 
+    F: Fn(i32) -> i32 {
+    f(3) // 3 被带入到了 double 的 x中
 }
