@@ -125,8 +125,6 @@ fn main() {
 
     pair.destroy();
 
-    fn function (i: i32) -> i32 { i + 1 }
-
     let closure_annotated = |i: i32| -> i32 { 
         println!("It is a closure");
         i + 1 
@@ -136,7 +134,6 @@ fn main() {
     let i = 1;
 
     println!("==================clourse");
-    println!("function: {}", function(i));
     println!("closure_annotated: {}", closure_annotated(i));
     println!("closure_inferred: {}", closure_inferred(i));
 
@@ -220,13 +217,20 @@ fn main() {
 
     // `double` satisfies `apply_to_3`'s trait bound
     let double = |x| 2 * x;
-
+    // double clourse as input paramters
     println!("3 doubled: {}", apply_to_3(double));
 
-    
+    let closure = || println!("I am a closure!");
 
+    call_me(closure);
+    call_me(function);
 
-}
+    let fn_plain = create_fn();
+    let mut fn_mut = create_fnmut();
+
+    fn_plain();
+    fn_mut();
+} 
 
 fn apply<F>(f: F) where
     // The closure takes no input and returns nothing.
@@ -239,4 +243,24 @@ fn apply<F>(f: F) where
 fn apply_to_3<F>(f: F) -> i32 where 
     F: Fn(i32) -> i32 {
     f(3) // 3 被带入到了 double 的 x中
+}
+
+fn call_me<F: Fn()>(f: F) {
+    f();
+}
+
+fn function() {
+    println!("I am a function!");
+}
+
+fn create_fn() -> impl Fn() {
+    let text = "Fn".to_owned();
+
+    move || println!("This is a: {}", text);
+}
+
+fn create_fnmut() -> impl FnMut() {
+    let text = "FnMut".to_owned();
+
+    move || println!("This is a: {}", text)
 }
