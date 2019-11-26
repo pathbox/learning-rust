@@ -225,11 +225,60 @@ fn main() {
     call_me(closure);
     call_me(function);
 
-    let fn_plain = create_fn();
+    // let fn_plain = create_fn();
     let mut fn_mut = create_fnmut();
 
-    fn_plain();
+    // fn_plain();
     fn_mut();
+
+    let vec1 = vec![1, 2, 3];
+    let vec2 = vec![4, 5, 6];
+
+    // `iter()` for vecs yields `&i32`.
+    let mut iter = vec1.iter();
+    // `into_iter()` for vecs yields `i32`.
+    let mut into_iter = vec2.into_iter();
+
+    // A reference to what is yielded is `&&i32`. Destructure to `i32`.
+    println!("Find 2 in vec1: {:?}", iter     .find(|&&x| x == 2));
+    // A reference to what is yielded is `&i32`. Destructure to `i32`.
+    println!("Find 2 in vec2: {:?}", into_iter.find(| &x| x == 2));
+
+    let array1 = [1, 2, 3];
+    let array2 = [4, 5, 6];
+
+    // `iter()` for arrays yields `&i32`
+    println!("Find 2 in array1: {:?}", array1.iter()     .find(|&&x| x == 2));
+    // `into_iter()` for arrays unusually yields `&i32`
+    println!("Find 2 in array2: {:?}", array2.into_iter().find(|&&x| x == 2));
+
+    println!("Find the sum of all the squared odd numbers under 1000");
+    let upper = 1000;
+
+    // Imperative approach
+    // Declare accumulator variable
+    let mut acc = 0;
+    // Iterate: 0, 1, 2, ... to infinity
+    for n in 0.. {
+        // Square the number
+        let n_squared = n * n;
+
+        if n_squared >= upper {
+            // Break loop if exceeded the upper limit
+            break;
+        } else if is_odd(n_squared) {
+            // Accumulate value, if it's odd
+            acc += n_squared;
+        }
+    }
+    println!("imperative style: {}", acc);
+
+    let sum_of_squared_odd_numbers: u32 = 
+        (0..).map(|n| n * n)
+             .take_while(|&n_squared| n_squared < upper)
+             .filter(|&n_squared| is_odd(n_squared))
+             .fold(0, |acc, n_squared| acc + n_squared);
+    println!("functional style: {}", sum_of_squared_odd_numbers);
 } 
 
 fn apply<F>(f: F) where
@@ -253,14 +302,18 @@ fn function() {
     println!("I am a function!");
 }
 
-fn create_fn() -> impl Fn() {
-    let text = "Fn".to_owned();
+// fn create_fn() -> impl Fn() {
+//     let text = "Fn".to_owned();
 
-    move || println!("This is a: {}", text);
-}
+//     move || println!("This is a: {}", text);
+// }
 
 fn create_fnmut() -> impl FnMut() {
     let text = "FnMut".to_owned();
 
     move || println!("This is a: {}", text)
+}
+
+fn is_odd(n: u32) -> bool {
+    n % 2 == 1
 }
