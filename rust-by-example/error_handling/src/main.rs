@@ -61,6 +61,14 @@ fn main() {
     eat1(cordon_bleu, Day::Monday);
     eat1(steak, Day::Tuesday);
     eat1(sushi, Day::Wednesday);
+
+    let numbers = vec!["42", "93", "18"];
+    let empty = vec![];
+    let strings = vec!["tofu", "93", "18"];
+
+    print(double_first(numbers));
+    print(double_first(empty));
+    print(double_first(strings));
 }
 
 #[derive(Debug)] enum Food1 { CordonBleu, Steak, Sushi }
@@ -107,3 +115,42 @@ fn eat1(food: Food1, day: Day) {
 }
 
 
+use std::error;
+use std::fmt;
+
+type Result<T> = std::result::Result<T, DoubleError>;
+
+// Define our error types. These may be customized for our error handling cases.
+// Now we will be able to write our own errors, defer to an underlying error
+// implementation, or do something in between.
+#[derive(Debug, Clone)]
+struct DoubleError;
+
+impl fmt::Display for DoubleError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "invalid first item to double")
+    }
+}
+
+impl error::Error for DoubleError {
+    fn source(&self) -> Option<&(dyn error::Error + 'static')> {
+        None 
+    }
+}
+
+fn double_first(vec: Vec<&str>) -> Result<i32> {
+    vec.first()
+        .ok_or(DoubleError)
+        .and_then(|s| {
+            s.parse::<i32>()
+                .map_err(|_| DoubleError)
+                .map(|i| 2 * i)
+        })
+}
+
+fn print(result: Result<i32>) {
+    match result {
+        Ok(n) => println!("The first doubled is {}", n),
+        Err(e) => println!("Error: {}", e),
+    }
+}
