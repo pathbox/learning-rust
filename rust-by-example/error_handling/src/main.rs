@@ -55,5 +55,55 @@ fn main() {
     eat(cooked_apple);
     eat(cooked_carrot);
     eat(cooked_potato);
+
+    let (cordon_bleu, steak, sushi) = (Food1::CordonBleu, Food1::Steak, Food1::Sushi);
+
+    eat1(cordon_bleu, Day::Monday);
+    eat1(steak, Day::Tuesday);
+    eat1(sushi, Day::Wednesday);
 }
+
+#[derive(Debug)] enum Food1 { CordonBleu, Steak, Sushi }
+#[derive(Debug)] enum Day { Monday, Tuesday, Wednesday }
+
+// We don't have the ingredients to make Sushi.
+fn have_ingredients(food: Food1) -> Option<Food1> {
+    match food {
+        Food1::Sushi => None,
+        _           => Some(food),
+    }
+}
+
+// We have the recipe for everything except Cordon Bleu.
+fn have_recipe(food: Food1) -> Option<Food1> {
+    match food {
+        Food1::CordonBleu => None,
+        _                => Some(food),
+    }
+}
+
+// To make a dish, we need both the recipe and the ingredients.
+// We can represent the logic with a chain of `match`es:
+fn cookable_v1(food: Food1) -> Option<Food1> {
+    match have_recipe(food) {
+        None       => None,
+        Some(food) => match have_ingredients(food) {
+            None       => None,
+            Some(food) => Some(food),
+        },
+    }
+}
+
+// This can conveniently be rewritten more compactly with `and_then()`:
+fn cookable_v2(food: Food1) -> Option<Food1> {
+    have_recipe(food).and_then(have_ingredients)
+}
+
+fn eat1(food: Food1, day: Day) {
+    match cookable_v2(food) {
+        Some(food) => println!("Yay! On {:?} we get to eat {:?}.", day, food),
+        None       => println!("Oh no. We don't get to eat on {:?}?", day),
+    }
+}
+
 
