@@ -69,6 +69,36 @@ fn main() {
     print(double_first(numbers));
     print(double_first(empty));
     print(double_first(strings));
+
+    // let numbers = vec!["42", "93", "18"];
+    // let empty = vec![];
+    // let strings = vec!["tofu", "93", "18"];
+
+    // print(double_first(numbers));
+    // print(double_first(empty));
+    // print(double_first(strings));
+
+    let strings = vec!["tofu","93","18"];
+    let numbers: Vec<_> = strings 
+        .into_iter()  // 转为iter
+        .map(|s| s.parse::<i32>()) // 用map进行parse
+        .collect(); // 返回集合
+    println!("Results: {:?}", numbers);
+
+    let strings1 = vec!["tofu", "93", "18"];
+    let numbers1: Vec<_> = strings1
+        .into_iter()
+        .map(|s| s.parse::<i32>())
+        .filter_map(Result::ok)
+        .collect();
+    println!("Results: {:?}", numbers1);
+
+    // let (numbers, errors): (Vec<_>, Vec<_>) = strings
+    //     .into_iter()
+    //     .map(|s| s.parse::<i32>())
+    //     .partition(Result::is_ok);
+    // println!("Numbers: {:?}", numbers);
+    // println!("Errors: {:?}", errors);
 }
 
 #[derive(Debug)] enum Food1 { CordonBleu, Steak, Sushi }
@@ -117,6 +147,7 @@ fn eat1(food: Food1, day: Day) {
 
 use std::error;
 use std::fmt;
+use std::num::ParseIntError;
 
 type Result<T> = std::result::Result<T, DoubleError>;
 
@@ -133,7 +164,7 @@ impl fmt::Display for DoubleError {
 }
 
 impl error::Error for DoubleError {
-    fn source(&self) -> Option<&(dyn error::Error + 'static')> {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         None 
     }
 }
@@ -154,3 +185,54 @@ fn print(result: Result<i32>) {
         Err(e) => println!("Error: {}", e),
     }
 }
+
+// type Result<T> = std::result::Result<T, DoubleError>;
+
+// #[derive(Debug)]
+// enum DoubleError {
+//     EmptyVec,
+
+//     Parse(ParseIntError),
+// }
+
+// impl fmt::Display for DoubleError {
+//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//         match *self {
+//             DoubleError::EmptyVec =>
+//                 write!(f, "please use a vector with at least one element")
+//             DoubleError::Parse(ref e) => e.fmt(f),
+//         }
+//     }
+// }
+
+// impl error::Error for DoubleError {
+//     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+//         match *self {
+//             DoubleError::EmptyVec => None,
+//             DoubleError::Parse(ref e) => Some(e),
+//         }
+//     }
+// }
+
+// // Implement the conversion from `ParseIntError` to `DoubleError`.
+// // This will be automatically called by `?` if a `ParseIntError`
+// // needs to be converted into a `DoubleError`.
+// impl From<ParseIntError> for DoubleError {
+//     fn from(err: ParseIntError) -> DoubleError {
+//         DoubleError::Parse(err)
+//     }
+// }
+
+// fn double_first(vec: Vec<&str>) -> Result<i32> {
+//     let first = vec.first().ok_or(DoubleError::EmptyVec)?;
+//     let parsed = first.parse::<i32>()?;
+
+//     Ok(2 * parsed)
+// }
+
+// fn print(result: Result<i32>) {
+//     match result {
+//         Ok(n) => println!("The first doubled is {}", n),
+//         Err(e) => println!("Error: {}", e),
+//     }
+// }
