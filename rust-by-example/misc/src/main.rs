@@ -1,4 +1,8 @@
 use std::thread;
+use std::sync::mpsc::{Sender, Receiver};
+use std::sync::mpsc;
+
+static NTHREADS: i32 = 3;
 
 fn main() {
     // This is our data to process.
@@ -69,4 +73,31 @@ fn main() {
     let final_result = intermediate_sums.iter().sum::<u32>();
 
     println!("Final sum result: {}", final_result);
+
+    let (tx, rx): (Sender<i32>, Receiver<i32>) = mpsc::channel();
+    let mut children = Vec::new();
+
+    for id in 0..NTHREADS {
+        let thread_tx = tx.clone();
+
+        let child = thread::spawn(move || {
+            thread_tx.send(id).unwrap();
+
+            println!("thread {} finished", id);
+        });
+
+        children.push(child);
+    }
+
+    let mut ids = Vec::with_capacity(NTHREADS as usize);
+    for _ in 0..NTHREADS {
+        ids.push(rx.recv());  // tx 和rx 在不同的线程中
+    }
+
+    for child in children {
+        child.join().expect("oops! the child thread panicked");
+    }
+
+    println!("{:?}", ids);
+
 }
