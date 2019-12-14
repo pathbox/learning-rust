@@ -177,6 +177,57 @@ fn main() {
     for (contact, &number) in contacts.iter() {
         println!("Calling {}: {}", contact, call(number));
     }
+
+    let mut accounts: Accounts = HashMap::new();
+    
+    let account = Account {
+        username: "j.everyman",
+        password: "password123",
+    };
+
+    let account_info = AccountInfo {
+        name: "John Everyman",
+        email: "j.everyman@email.com",
+    };
+
+    accounts.insert(account, account_info);
+
+    try_login(&accounts, "j.everyman", "psasword123");
+
+    try_login(&accounts, "j.everyman", "password123");
 }
 
+// Eq requires that you derive PartialEq on the type.
+#[derive(PartialEq, Eq, Hash)]
+struct Account<'a>{
+    username: &'a str,
+    password: &'a str,
+}
+
+struct AccountInfo<'a>{
+    name: &'a str,
+    email: &'a str,
+}
+
+type Accounts<'a> = HashMap<Account<'a>, AccountInfo<'a>>; // 自定义HashMap key and value
+
+fn try_login<'a>(accounts: &Accounts<'a>,
+    username: &'a str, password: &'a str){
+        println!("Username: {}", username);
+    println!("Password: {}", password);
+    println!("Attempting login...");
+    let login = Account {
+        username,
+        password,
+    };
+
+    match accounts.get(&login) {
+        Some(account_info) => {
+            println!("Successful logon!");
+            println!("Name: {}", account_info.name);
+            println!("Email: {}", account_info.email);
+        },
+        _ => println!("Login failed!"),
+    }
+}
 
