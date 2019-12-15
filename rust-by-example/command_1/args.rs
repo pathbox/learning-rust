@@ -36,7 +36,7 @@ fn main() {
             let cmd = &args[1];
             let num = &args[2];
             // parse the number
-            let number: i32 = match num.parse() {
+            let number: i32 = match num.parse() { // 解析 num是否为i32
                 Ok(n) => {
                     n
                 },
