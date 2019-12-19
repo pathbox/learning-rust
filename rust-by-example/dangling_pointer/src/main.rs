@@ -1,3 +1,11 @@
+struct Foo<'a> {
+    x: &'a i32,
+}
+
+impl<'a> Foo<'a> {
+    fn x(&self) -> &'a i32 {self.x}
+}
+
 fn main() {
     // let r; 
     // {
@@ -16,6 +24,12 @@ fn main() {
         v = skip_prefix(line, p.as_str()); // |
     } // -+ `p` goes out of scope.
     println!("{}", v);
+
+    let y = &5;
+
+    let f = Foo{ x: y };
+
+    println!("x is: {}", f.x());
 }
 // fn skip_prefix(line: &str, prefix: &str) -> &str {
 // // ...
