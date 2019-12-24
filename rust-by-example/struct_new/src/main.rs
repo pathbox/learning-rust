@@ -53,6 +53,24 @@ fn bar<T, K>(x: T, y: K) where T: Clone, K: Clone + Debug {
     println!("{:?}",y);
 }
 
+trait Foo {
+    fn foo(&self)
+}
+
+trait FooBar : Foo {
+    fn boobar(&self)
+}
+
+struct Baz;
+
+impl Foo for Baz {
+    fn foo(&self) { println!("foo"); }
+}
+
+impl FooBar for Baz {
+    fn foobar(&self) { println!("foobar"); }
+}
+
 fn main() {
     let c = CircleBuilder::new()
                 .x(1.0)
