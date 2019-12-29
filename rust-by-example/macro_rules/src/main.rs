@@ -32,6 +32,17 @@ macro_rules! calculate {
     }};
 }
 
+macro_rules! o_O {
+    (
+        $(
+            $x:expr; [ $( $y:expr ),*]
+        );*
+
+    ) => {
+        &[ $($( $x + $y ),*),* ]
+    }
+}
+
 fn main() {
     foo();
     bar();
@@ -51,4 +62,8 @@ fn main() {
     calculate! {
         eval (1+2) * (3/1)
     }
+
+    let a: &[i32]
+        = o_O!(10; [1,2,3]; 20; [4,5,6]);
+    println!("o_O: {:?}", a);
 }
